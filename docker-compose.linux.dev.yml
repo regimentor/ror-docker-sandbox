@@ -1,0 +1,35 @@
+version: "3"
+
+
+services:
+
+  tver2me-rails:
+    container_name: tver2me-rails
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    volumes:
+      - ./app:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - tver2me-db
+
+  tver2me-db:
+    container_name: tver2me-db
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    expose:
+      - ${DB_PORT}
+    ports:
+      - ${DB_PORT_OUT}:${DB_PORT}
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - tver2me-db:/var/lib/postgresql/data
+
+volumes:
+  tver2me-db:
