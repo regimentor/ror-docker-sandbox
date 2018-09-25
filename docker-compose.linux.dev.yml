@@ -1,10 +1,11 @@
+# prettier-ignore
 version: "3"
 
 
 services:
 
-  tver2me-rails:
-    container_name: tver2me-rails
+  rails:
+    container_name: example-rails
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
@@ -13,10 +14,10 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - tver2me-db
+      - db
 
-  tver2me-db:
-    container_name: tver2me-db
+  db:
+    container_name: example-db
     build:
       context: .
       dockerfile: ./docker/postgres/Dockerfile
@@ -29,7 +30,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE}
     volumes:
-      - tver2me-db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
 
 volumes:
-  tver2me-db:
+  db:
